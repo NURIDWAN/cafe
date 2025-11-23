@@ -24,11 +24,11 @@ async function testConnection() {
             console.log('Connection successful!');
             console.log('Buckets:', data.map(b => b.name));
 
-            const imagesBucket = data.find(b => b.name === 'images');
+            const imagesBucket = data.find(b => b.name === 'cafe-website');
             if (imagesBucket) {
-                console.log('✅ "images" bucket found.');
+                console.log('✅ "cafe-website" bucket found.');
             } else {
-                console.warn('⚠️ "images" bucket NOT found. Please create it in your Supabase dashboard.');
+                console.warn('⚠️ "cafe-website" bucket NOT found. Please create it in your Supabase dashboard.');
             }
         }
     } catch (err) {

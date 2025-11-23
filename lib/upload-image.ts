@@ -5,7 +5,7 @@ export const uploadImageAssets = async (buffer: Buffer, key: string) => {
   try {
     // Check if Supabase is configured
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      const bucket = 'images'; // Ensure this bucket exists in Supabase
+      const bucket = 'cafe-website'; // Ensure this bucket exists in Supabase
 
       // Upload to Supabase
       const { data, error } = await supabase

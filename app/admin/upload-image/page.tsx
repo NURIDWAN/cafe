@@ -24,6 +24,16 @@ export default function UploadImagePage() {
             <h1 className="text-2xl font-bold mb-4">Upload Image (Local)</h1>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md">
                 <div className="flex flex-col gap-2">
+                    <label htmlFor="folder" className="text-sm font-medium">Folder</label>
+                    <select name="folder" className="border p-2 rounded bg-background">
+                        <option value="uploads">Default (uploads)</option>
+                        <option value="team">Team</option>
+                        <option value="products">Products</option>
+                        <option value="gallery">Gallery</option>
+                    </select>
+                </div>
+
+                <div className="flex flex-col gap-2">
                     <label htmlFor="image" className="text-sm font-medium">Select Image</label>
                     <input
                         type="file"
