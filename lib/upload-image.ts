@@ -2,27 +2,62 @@ import {
   S3Client,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
+import { uploadImageLocal, getPlaceholderImage } from "./upload-image-local";
 
-const r2 = new S3Client({
-  region: "auto", // required for R2
-  endpoint: `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
-  credentials: {
-    accessKeyId: process.env.R2_UPLOAD_IMAGE_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.R2_UPLOAD_IMAGE_SECRET_ACCESS_KEY!,
-  },
-});
+// Check if R2 is configured
+const isR2Configured = () => {
+  return !!(
+    process.env.R2_UPLOAD_IMAGE_ACCESS_KEY_ID &&
+    process.env.R2_UPLOAD_IMAGE_SECRET_ACCESS_KEY &&
+    process.env.CLOUDFLARE_ACCOUNT_ID &&
+    process.env.R2_UPLOAD_IMAGE_BUCKET_NAME
+  );
+};
+
+// Initialize R2 client if configured
+let r2: S3Client | null = null;
+if (isR2Configured()) {
+  r2 = new S3Client({
+    region: "auto", // required for R2
+    endpoint: `https://${process.env.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+    credentials: {
+      accessKeyId: process.env.R2_UPLOAD_IMAGE_ACCESS_KEY_ID!,
+      secretAccessKey: process.env.R2_UPLOAD_IMAGE_SECRET_ACCESS_KEY!,
+    },
+  });
+}
 
 export const uploadImageAssets = async (buffer: Buffer, key: string) => {
-  await r2.send(
-    new PutObjectCommand({
-      Bucket: process.env.R2_UPLOAD_IMAGE_BUCKET_NAME!,
-      Key: key,
-      Body: buffer,
-      ContentType: "image/*",
-      ACL: "public-read", // optional if bucket is public
-    })
-  );
+  try {
+    // Try R2 upload first if configured
+    if (r2 && isR2Configured()) {
+      await r2.send(
+        new PutObjectCommand({
+          Bucket: process.env.R2_UPLOAD_IMAGE_BUCKET_NAME!,
+          Key: key,
+          Body: buffer,
+          ContentType: "image/*",
+          ACL: "public-read", // optional if bucket is public
+        })
+      );
 
-  const publicUrl = `https://pub-6f0cf05705c7412b93a792350f3b3aa5.r2.dev/${key}`;
-  return publicUrl;
+      const publicUrl = `https://pub-6f0cf05705c7412b93a792350f3b3aa5.r2.dev/${key}`;
+      return publicUrl;
+    }
+  } catch (error) {
+    console.warn("R2 upload failed, falling back to local storage:", error);
+  }
+
+  // Fallback to local storage
+  try {
+    const publicUrl = await uploadImageLocal(buffer, key);
+    return publicUrl;
+  } catch (error) {
+    console.error("Local upload also failed:", error);
+    // Return placeholder as last resort
+    return getPlaceholderImage();
+  }
 };
+
+// Helper function to get placeholder image
+export { getPlaceholderImage };

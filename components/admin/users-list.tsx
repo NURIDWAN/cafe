@@ -13,10 +13,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { format } from "date-fns";
-import { Check, X, Trash2, Search, Shield, UserCheck, UserX } from "lucide-react";
+import { Trash2, Search, Shield, UserCheck, UserX } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 
 interface User {
     id: string;
@@ -34,7 +33,6 @@ export function UsersList() {
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
-    const router = useRouter();
 
     useEffect(() => {
         const fetchUsers = async () => {

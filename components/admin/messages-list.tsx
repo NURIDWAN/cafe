@@ -19,7 +19,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { format } from "date-fns";
-import { Check, X, Trash2, Mail, MailOpen, Reply, Archive } from "lucide-react";
+import { Trash2, Mail, MailOpen, Reply, Archive, Check } from "lucide-react";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 

@@ -12,7 +12,10 @@ export async function POST(req: NextRequest) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({
+        error: "No file provided",
+        message: "Please select an image file to upload"
+      }, { status: 400 });
     }
 
     // Validate MIME type - only allow image files
@@ -53,11 +56,20 @@ export async function POST(req: NextRequest) {
     // Upload the file
     const url = await uploadImageAssets(buffer, filename);
 
-    return NextResponse.json({ url });
+    return NextResponse.json({
+      success: true,
+      url,
+      message: "Image uploaded successfully",
+      filename
+    });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json(
-      { error: "Failed to process upload" },
+      {
+        success: false,
+        error: "Failed to process upload",
+        message: "Please try again or contact support"
+      },
       { status: 500 },
     );
   }
