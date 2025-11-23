@@ -25,8 +25,16 @@ const polarClient = new Polar({
 });
 
 export const auth = betterAuth({
-  trustedOrigins: [`${process.env.NEXT_PUBLIC_APP_URL}`],
-  allowedDevOrigins: [`${process.env.NEXT_PUBLIC_APP_URL}`],
+  trustedOrigins: [
+    `${process.env.NEXT_PUBLIC_APP_URL}`,
+    "http://192.168.1.2:3001",
+    "http://localhost:3001",
+  ],
+  allowedDevOrigins: [
+    `${process.env.NEXT_PUBLIC_APP_URL}`,
+    "http://192.168.1.2:3001",
+    "http://localhost:3001",
+  ],
   cookieCache: {
     enabled: true,
     maxAge: 5 * 60, // Cache duration in seconds
@@ -41,6 +49,10 @@ export const auth = betterAuth({
       subscription,
     },
   }),
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: false,
+  },
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -48,6 +60,9 @@ export const auth = betterAuth({
     },
   },
   plugins: [
+    // Polar.sh subscription plugin (commented out for cafe app)
+    // Uncomment and configure if you need subscription management
+    /*
     polar({
       client: polarClient,
       createCustomerOnSignUp: true,
@@ -95,7 +110,7 @@ export const auth = betterAuth({
             ) {
               console.log("🎯 Processing subscription webhook:", type);
               console.log("📦 Payload data:", JSON.stringify(data, null, 2));
-
+    
               try {
                 // STEP 1: Extract user ID from customer data
                 const userId = data.customer?.externalId;
@@ -133,14 +148,14 @@ export const auth = betterAuth({
                     : null,
                   userId: userId as string | null,
                 };
-
+    
                 console.log("💾 Final subscription data:", {
                   id: subscriptionData.id,
                   status: subscriptionData.status,
                   userId: subscriptionData.userId,
                   amount: subscriptionData.amount,
                 });
-
+    
                 // STEP 3: Use Drizzle's onConflictDoUpdate for proper upsert
                 await db
                   .insert(subscription)
@@ -173,7 +188,7 @@ export const auth = betterAuth({
                       userId: subscriptionData.userId,
                     },
                   });
-
+    
                 console.log("✅ Upserted subscription:", data.id);
               } catch (error) {
                 console.error(
@@ -187,6 +202,7 @@ export const auth = betterAuth({
         }),
       ],
     }),
+    */
     nextCookies(),
   ],
 });

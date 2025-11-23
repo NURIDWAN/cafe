@@ -10,17 +10,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  if (sessionCookie && ["/sign-in", "/sign-up"].includes(pathname)) {
+  if (sessionCookie && ["/login", "/sign-up"].includes(pathname)) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!sessionCookie && pathname.startsWith("/dashboard")) {
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+  if (!sessionCookie && (pathname.startsWith("/dashboard") || pathname.startsWith("/admin"))) {
+    return NextResponse.redirect(new URL("/login", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/sign-in", "/sign-up"],
+  matcher: ["/dashboard/:path*", "/login", "/sign-up", "/admin/:path*"],
 };

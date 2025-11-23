@@ -6,8 +6,8 @@
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
-    --font-sans: var(--font-apple-system);
-    --font-mono: var(--font-sf-mono);
+    --font-sans: var(--font-inter);
+    --font-serif: var(--font-playfair);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -44,78 +44,82 @@
 }
 
 :root {
-    /* Apple Light Theme Colors */
-    --background: #ffffff;
-    --foreground: #000000;
-    --card: #ffffff;
-    --card-foreground: #000000;
-    --popover: #ffffff;
-    --popover-foreground: #000000;
-    --primary: #0071e3; /* Apple Blue */
-    --primary-foreground: #ffffff;
-    --secondary: #f5f5f7; /* Apple Light Gray */
-    --secondary-foreground: #1d1d1f;
-    --muted: #f5f5f7;
-    --muted-foreground: #86868b;
-    --accent: #0071e3; /* Apple Blue */
-    --accent-foreground: #ffffff;
-    --destructive: #ff3b30; /* Apple Red */
-    --destructive-foreground: #ffffff;
-    --border: #e2e2e7; /* Lighter, more subtle border */
-    --input: #f5f5f7;
-    --ring: #0071e3;
-    --chart-1: #0071e3; /* Apple Blue */
-    --chart-2: #34c759; /* Apple Green */
-    --chart-3: #ff9500; /* Apple Orange */
-    --chart-4: #ffcc00; /* Apple Yellow */
-    --chart-5: #af52de; /* Apple Purple */
-    --sidebar: #f5f5f7;
-    --sidebar-foreground: #1d1d1f;
-    --sidebar-primary: #0071e3;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #e8e8ed;
-    --sidebar-accent-foreground: #1d1d1f;
-    --sidebar-border: #e2e2e7; /* Lighter border */
-    --sidebar-ring: #0071e3;
-    /* Apple Fonts */
-    --font-apple-system:
-        -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue",
-        Helvetica, sans-serif;
-    --font-sf-mono: "SF Mono", Menlo, monospace;
-    --font-sans: var(--font-apple-system);
-    --font-serif: "New York", Georgia, serif;
-    --font-mono: var(--font-sf-mono);
-    /* Apple uses more rounded corners */
-    --radius: 10px;
-    /* Apple-style shadows */
-    --shadow-2xs: 0px 1px 2px rgba(0, 0, 0, 0.05);
-    --shadow-xs: 0px 1px 3px rgba(0, 0, 0, 0.1);
-    --shadow-sm: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    --shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0px 8px 16px rgba(0, 0, 0, 0.1);
-    --shadow-xl: 0px 12px 24px rgba(0, 0, 0, 0.1);
-    --shadow-2xl: 0px 16px 32px rgba(0, 0, 0, 0.1);
+    /* Modern Aesthetic Cafe Palette */
+    --background: #FDFBF7;
+    /* Cream/Warm Neutral */
+    --foreground: #4A4036;
+    /* Earthy Brown */
+
+    --card: #FFFFFF;
+    --card-foreground: #4A4036;
+
+    --popover: #FFFFFF;
+    --popover-foreground: #4A4036;
+
+    --primary: #4A4036;
+    /* Earthy Brown */
+    --primary-foreground: #FDFBF7;
+
+    --secondary: #8F9E8B;
+    /* Sage Green */
+    --secondary-foreground: #FFFFFF;
+
+    --muted: #F2EFE9;
+    --muted-foreground: #8C847C;
+
+    --accent: #D4C5B0;
+    /* Light Beige */
+    --accent-foreground: #4A4036;
+
+    --destructive: #E57373;
+    --destructive-foreground: #FFFFFF;
+
+    --border: #E6E2DA;
+    --input: #F2EFE9;
+    --ring: #8F9E8B;
+    /* Sage Green Ring */
+
+    --radius: 0.5rem;
+
+    /* Chart colors tailored to palette */
+    --chart-1: #4A4036;
+    --chart-2: #8F9E8B;
+    --chart-3: #D4C5B0;
+    --chart-4: #C2B280;
+    --chart-5: #A69080;
+
+    --sidebar: #FDFBF7;
+    --sidebar-foreground: #4A4036;
+    --sidebar-primary: #4A4036;
+    --sidebar-primary-foreground: #FDFBF7;
+    --sidebar-accent: #F2EFE9;
+    --sidebar-accent-foreground: #4A4036;
+    --sidebar-border: #E6E2DA;
+    --sidebar-ring: #8F9E8B;
 }
 
 @layer base {
     * {
         @apply border-border outline-ring/50;
     }
+
     body {
         @apply bg-background text-foreground font-sans;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
     }
+
     button,
     input,
     select,
     textarea {
         @apply focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all duration-200;
     }
+
     button {
         @apply hover:cursor-pointer;
     }
+
     h1,
     h2,
     h3,

@@ -1,6 +1,7 @@
 import {
   boolean,
   integer,
+  json,
   pgTable,
   text,
   timestamp,
@@ -11,6 +12,7 @@ export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
+  username: text("username").unique(),
   emailVerified: boolean("emailVerified").notNull().default(false),
   image: text("image"),
   createdAt: timestamp("createdAt").notNull().defaultNow(),
@@ -83,3 +85,105 @@ export const subscription = pgTable("subscription", {
   customFieldData: text("customFieldData"), // JSON string
   userId: text("userId").references(() => user.id),
 });
+
+export const categories = pgTable("categories", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull().unique(),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const products = pgTable("products", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  description: text("description"),
+  price: integer("price").notNull(),
+  imageUrl: text("imageUrl"),
+  categoryId: text("categoryId")
+    .notNull()
+    .references(() => categories.id, { onDelete: "cascade" }),
+  isAvailable: boolean("isAvailable").notNull().default(true),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const orders = pgTable("orders", {
+  id: text("id").primaryKey(),
+  userId: text("userId")
+    .notNull()
+    .references(() => user.id, { onDelete: "cascade" }),
+  status: text("status").notNull().default("pending"), // pending, paid, completed, cancelled
+  totalAmount: integer("totalAmount").notNull(),
+  paymentId: text("paymentId"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const reservations = pgTable("reservations", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  date: text("date").notNull(), // YYYY-MM-DD
+  time: text("time").notNull(), // HH:mm
+  pax: integer("pax").notNull(),
+  status: text("status").notNull().default("pending"), // pending, confirmed, rejected
+  notes: text("notes"),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const content = pgTable("content", {
+  id: text("id").primaryKey(),
+  key: text("key").notNull().unique(), // e.g., 'homepage'
+  data: json("data").notNull(), // Stores arbitrary JSON content
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const gallery = pgTable("gallery", {
+  id: text("id").primaryKey(),
+  title: text("title").notNull(),
+  description: text("description"),
+  imageUrl: text("imageUrl").notNull(),
+  category: text("category").notNull().default("all"), // all, the-space, our-coffee, pastries
+  order: integer("order").notNull().default(0),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const contactMessages = pgTable("contactMessages", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  message: text("message").notNull(),
+  status: text("status").notNull().default("unread"), // unread, read, replied
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+});
+
+export const testimonials = pgTable("testimonials", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  role: text("role"), // e.g., "Customer", "Food Blogger", etc.
+  company: text("company"), // optional company name
+  content: text("content").notNull(),
+  rating: integer("rating").notNull(), // 1-5 stars
+  imageUrl: text("imageUrl"), // optional customer photo
+  isActive: boolean("isActive").notNull().default(true),
+  order: integer("order").notNull().default(0),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
+export const team = pgTable("team", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  role: text("role").notNull(), // e.g., "Head Chef", "Manager", etc.
+  bio: text("bio"), // short biography
+  imageUrl: text("imageUrl"), // team member photo
+  isActive: boolean("isActive").notNull().default(true),
+  order: integer("order").notNull().default(0),
+  createdAt: timestamp("createdAt").notNull().defaultNow(),
+  updatedAt: timestamp("updatedAt").notNull().defaultNow(),
+});
+
