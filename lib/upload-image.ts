@@ -1,5 +1,4 @@
 import { supabase } from "./supabase";
-import { uploadImageLocal, getPlaceholderImage } from "./upload-image-local";
 
 export const uploadImageAssets = async (buffer: Buffer, key: string) => {
   try {
@@ -29,17 +28,19 @@ export const uploadImageAssets = async (buffer: Buffer, key: string) => {
       return publicUrl;
     }
   } catch (error) {
-    console.warn("Supabase upload failed, falling back to local storage:", error);
+    console.warn("Supabase upload failed:", error);
   }
 
-  // Fallback to local storage
-  try {
-    return await uploadImageLocal(buffer, key);
-  } catch (error) {
-    console.error("Local upload also failed:", error);
-    return getPlaceholderImage();
-  }
+  // Return placeholder if upload fails
+  return getPlaceholderImage();
 };
 
 // Helper function to get placeholder image
-export { getPlaceholderImage };
+export const getPlaceholderImage = (type: "product" | "gallery" | "user" = "product") => {
+  const placeholders = {
+    product: "/images/placeholder-product.svg",
+    gallery: "/images/placeholder-gallery.svg",
+    user: "/images/placeholder-user.svg"
+  };
+  return placeholders[type];
+};
