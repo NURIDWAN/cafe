@@ -13,6 +13,7 @@ import {
     UserCheck,
     ShoppingCart,
     Tags,
+    FileBarChart,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,6 +38,11 @@ const sidebarItems = [
         icon: ShoppingCart,
         label: "Orders",
         href: "/admin/orders",
+    },
+    {
+        icon: FileBarChart,
+        label: "Reports",
+        href: "/admin/reports",
     },
     {
         icon: Calendar,

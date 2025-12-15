@@ -53,12 +53,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
-  socialProviders: {
-    google: {
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    },
-  },
+
   plugins: [
     // Polar.sh subscription plugin (commented out for cafe app)
     // Uncomment and configure if you need subscription management
