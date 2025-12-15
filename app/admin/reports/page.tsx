@@ -19,6 +19,9 @@ import { format, subDays, startOfWeek, endOfWeek, startOfMonth, endOfMonth, subW
 import { id } from "date-fns/locale";
 import { DownloadPDFButton } from "@/components/admin/download-pdf-button";
 
+// Force dynamic rendering for this page
+export const dynamic = 'force-dynamic';
+
 // Helper function to get date ranges
 function getDateRanges() {
     const now = new Date();

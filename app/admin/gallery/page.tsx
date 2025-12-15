@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { deleteGalleryItem } from "@/app/actions/admin";
 import { Button } from "@/components/ui/button";
 import {

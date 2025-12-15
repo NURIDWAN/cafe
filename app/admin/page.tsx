@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/db/drizzle";
 import { orders, products, reservations } from "@/db/schema";
